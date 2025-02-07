@@ -43,5 +43,13 @@
 }
 
 body {
-  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  @apply rounded-lg focus:outline-dashed focus:outline-2 focus:outline-offset-2 focus:outline-gray-600;
 }

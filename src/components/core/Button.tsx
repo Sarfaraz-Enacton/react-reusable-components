@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
 const base =
-  "inline-flex items-center gap-2 rounded-lg transition-all duration-300 ease-in-out active:opacity-85";
+  "inline-flex items-center gap-2 rounded-lg transition duration-300 ease-in-out active:opacity-85";
 const variants = {
-  primary: "bg-gray-600 hover:bg-gray-800 text-gray-50",
+  primary: "bg-gray-600 hover:bg-gray-800 text-gray-50 focus:outline-gray-600",
   outline:
-    "bg-transparent text-gray-600 border border-gray-600 hover:bg-gray-800 hover:text-gray-50",
+    "bg-transparent text-gray-600 border border-gray-600 hover:bg-gray-800 hover:text-gray-50 focus:outline-gray-600",
 };
 const sizes = {
   sm: "px-2 py-1 text-sm",

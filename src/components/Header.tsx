@@ -26,7 +26,7 @@ const Header = () => {
         <nav className="flex items-center justify-between gap-4">
           <Link
             to={routes.home}
-            className="h-9 transition-all duration-300 ease-in-out hover:opacity-85"
+            className="h-9 rounded-lg transition duration-300 ease-in-out hover:opacity-85 active:outline-gray-200"
           >
             <img className="max-h-9" src="/images/logo.svg" alt="logo" />
           </Link>
@@ -34,7 +34,7 @@ const Header = () => {
             {links.map((link) => (
               <li key={link.id}>
                 <Link
-                  className="rounded-lg px-2 py-1 font-medium transition-all duration-300 ease-in-out hover:bg-gray-200"
+                  className="rounded-lg px-2 py-1 font-medium transition duration-300 ease-in-out hover:bg-gray-200"
                   to={link.url}
                 >
                   {link.name}
