@@ -7,10 +7,12 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+      <main className="space-y-4 py-4 sm:space-y-8 sm:py-8">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 }

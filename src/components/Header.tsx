@@ -1,8 +1,34 @@
 import { Link } from "react-router-dom";
 import Button from "./core/Button";
 import { routes } from "../utils/routes-config";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const [navExpanded, setNavExpanded] = useState<boolean>(false);
+  const [scroll, setScroll] = useState<boolean>(false);
+
+  const handleNav = () => {
+    setNavExpanded(!navExpanded);
+  };
+
+  useEffect(() => {
+    navExpanded
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "auto");
+  }, [navExpanded]);
+
+  // to show white bg when scrolling
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      scrollPosition > 80 ? setScroll(true) : setScroll(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.addEventListener("scroll", handleScroll);
+    };
+  }, []);
   const links = [
     {
       id: 1,
@@ -21,185 +47,143 @@ const Header = () => {
     },
   ];
   return (
-    <header className="bg-gray-50 py-2.5">
-      <div className="container">
-        <nav className="flex items-center justify-between gap-4">
-          <Link
-            to={routes.home}
-            className="h-9 rounded-lg transition duration-300 ease-in-out hover:opacity-85 active:outline-gray-200"
+    <>
+      <header
+        className={`sticky top-0 z-10 py-3.5 ${
+          scroll ? "bg-gray-50/85 shadow-md backdrop-blur-lg" : "bg-gray-50"
+        } overflow-hidden`}
+      >
+        <div className="container">
+          <nav className="flex items-center justify-between gap-4">
+            <Link
+              to={routes.home}
+              className="h-8 rounded-lg transition duration-300 ease-in-out hover:opacity-85 active:outline-gray-200"
+            >
+              <img className="max-h-8" src="/images/logo.svg" alt="logo" />
+            </Link>
+            <ul className="flex items-center gap-4 max-md:hidden">
+              {links.map((link) => (
+                <li key={link.id}>
+                  <Link
+                    className="rounded-lg px-2 py-1 font-medium transition duration-300 ease-in-out hover:bg-gray-200"
+                    to={link.url}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="flex items-center gap-4 max-md:hidden">
+              <Button
+                role="link"
+                variant="outline"
+                size="md"
+                label={"login"}
+                link={routes.register}
+              />
+              <Button
+                role="link"
+                variant="primary"
+                size="md"
+                label={"Register"}
+                link={routes.register}
+              />
+            </div>
+            <button
+              className="rounded-md bg-gray-200 p-1 sm:p-2 md:hidden"
+              onClick={handleNav}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
+                />
+              </svg>
+            </button>
+          </nav>
+        </div>
+      </header>
+      {navExpanded && (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            setNavExpanded(false);
+          }}
+          className={`fixed inset-0 z-10 h-full w-full bg-black/30 md:hidden`}
+        ></div>
+      )}
+
+      <div
+        className={`fixed bottom-0 right-0 top-0 z-20 flex h-full w-full max-w-[280px] flex-col bg-white ${
+          navExpanded ? "translate-x-0" : "translate-x-full"
+        } transform-gpu duration-300 ease-in-out md:hidden`}
+      >
+        <div className="flex items-center justify-end gap-4 bg-gray-50 px-4 py-3.5">
+          <button
+            className="rounded-md bg-gray-200 p-1 sm:p-2 md:hidden"
+            onClick={handleNav}
           >
-            <img className="max-h-9" src="/images/logo.svg" alt="logo" />
-          </Link>
-          <ul className="flex items-center gap-4">
-            {links.map((link) => (
-              <li key={link.id}>
-                <Link
-                  className="rounded-lg px-2 py-1 font-medium transition duration-300 ease-in-out hover:bg-gray-200"
-                  to={link.url}
-                >
-                  {link.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="flex items-center gap-4">
-            <Button
-              role="link"
-              variant="outline"
-              size="md"
-              label={"login"}
-              link={routes.register}
-            />
-            <Button
-              role="link"
-              variant="primary"
-              size="md"
-              label={"Register"}
-              link={routes.register}
-            />
-          </div>
-        </nav>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <ul className="h-fulls justify-centers my-auto flex flex-col items-center gap-4 overflow-y-auto px-4 py-3.5">
+          {links.map((link) => (
+            <li key={link.id}>
+              <Link
+                className="rounded-lg px-2 py-1 font-medium transition duration-300 ease-in-out hover:bg-gray-200"
+                to={link.url}
+                onClick={handleNav}
+              >
+                {link.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center justify-center gap-4 px-4 py-8">
+          <Button
+            role="link"
+            variant="outline"
+            size="md"
+            label={"login"}
+            link={routes.register}
+            onClick={handleNav}
+          />
+          <Button
+            role="link"
+            variant="primary"
+            size="md"
+            label={"Register"}
+            link={routes.register}
+            onClick={handleNav}
+          />
+        </div>
       </div>
-    </header>
+    </>
   );
 };
 
 export default Header;
-
-// import React, { useEffect, useState } from "react";
-// import { Button } from "./Button";
-// import { NavLink } from "react-router-dom";
-// import { menuItems } from "../data/appData";
-// import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-
-// export const NavLinks = ({ linksCustomClass, customClass }) => {
-//   return (
-//     <div
-//       className={`flex items-center gap-6 lg:gap-16 flex-shrink-0 pl-5 ${customClass}`}
-//     >
-//       <ul
-//         className={`flex gap-4 lg:gap-8 text-primary text-base lg:text-lg font-medium uppercase ${linksCustomClass}`}
-//       >
-//         {menuItems.map((item) => (
-//           <li key={item.id}>
-//             <NavLink
-//               activeclassname="active"
-//               to={item.url}
-//               className={
-//                 "hover:text-secondary transition-all ease-in-out duration-300"
-//               }
-//             >
-//               {item.name}
-//             </NavLink>
-//           </li>
-//         ))}
-//       </ul>
-//       <Button variants={"primary"} text="Register" role={"button"} />
-//     </div>
-//   );
-// };
-
-// export const Header = () => {
-//   const [navExpanded, setNavExpanded] = useState(false);
-//   const [scroll, setScroll] = useState(false);
-
-//   const handleNav = () => {
-//     setNavExpanded(!navExpanded);
-//     // console.log("clicked");
-//   };
-
-//   // to stop scrolling of body when nav menu is open
-//   useEffect(() => {
-//     navExpanded
-//       ? (document.body.style.overflow = "hidden")
-//       : (document.body.style.overflow = "auto");
-//   }, [navExpanded]);
-
-//   // to show white bg when scrolling
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       const scrollPosition = window.scrollY;
-//       scrollPosition > 80 ? setScroll(true) : setScroll(false);
-//     };
-//     window.addEventListener("scroll", handleScroll);
-
-//     return () => {
-//       window.addEventListener("scroll", handleScroll);
-//     };
-//   }, []);
-
-//   return (
-//     <header
-//       className={`w-full py-4 lg:py-6 ${
-//         scroll ? "bg-light shadow-lg" : "bg-transparent"
-//       } fixed mx-auto z-50`}
-//     >
-//       <nav className="container flex justify-between items-center font-primary">
-//         <div className="">
-//           <img
-//             className="max-h-10 lg:max-h-16"
-//             src="/images/nav-logo.png"
-//             alt=""
-//           />
-//         </div>
-//         <NavLinks customClass={"hidden md:flex"} />
-
-//         <button
-//           onClick={handleNav}
-//           className="flex items-center justify-center md:hidden h-12 w-12 z-30"
-//         >
-//           {navExpanded ? (
-//             <XMarkIcon className="h-9 w-9 text-primary" />
-//           ) : (
-//             <Bars3Icon className="h-9 w-9 text-primary" />
-//           )}
-//         </button>
-//         {/* {navExpanded && (
-//           <>
-//             <div
-//               onClick={(e) => {
-//                 e.stopPropagation();
-//                 setNavExpanded(false);
-//               }}
-//               className="fixed inset-0 h-full w-full bg-dark/30 z-10 md:hidden"
-//             ></div>
-
-//             <div className="fixed h-full w-full right-0 top-0 bottom-0 max-w-[280px] z-20 transition-all ease-in-out duration-300">
-//               <div className="flex flex-col justify-center items-center py-24 w-full h-full ml-auto bg-section-gradient overflow-auto md:hidden transform">
-//                 <NavLinks
-//                   customClass={"md:hidden flex-col !p-0"}
-//                   linksCustomClass={"flex-col [&>li]:w-fit [&>li]:mx-auto"}
-//                 />
-//               </div>
-//             </div>
-//           </>
-//         )} */}
-//         <div
-//           onClick={(e) => {
-//             e.stopPropagation();
-//             setNavExpanded(false);
-//           }}
-//           className={`fixed inset-0 h-full w-full bg-dark/30 z-10 md:hidden ${
-//             navExpanded ? "translate-x-0" : "translate-x-full"
-//           } transition-allssss transform-gpu ease-in-out duration-300`}
-//         ></div>
-
-//         <div
-//           className={`fixed h-full w-full right-0 top-0 bottom-0 max-w-[280px] z-20 ${
-//             navExpanded ? "translate-x-0" : "translate-x-full"
-//           } transition-allssss transform-gpu ease-in-out duration-300`}
-//         >
-//           <div className="flex flex-col justify-center items-center py-24 w-full h-full ml-auto bg-section-gradient overflow-auto md:hidden transform">
-//             <NavLinks
-//               customClass={"md:hidden flex-col !p-0"}
-//               linksCustomClass={"flex-col [&>li]:w-fit [&>li]:mx-auto"}
-//             />
-//           </div>
-//         </div>
-//       </nav>
-//     </header>
-//   );
-// };
 
 // import React, { Children } from "react";
 
@@ -241,7 +225,7 @@ export default Header;
 // const Description = ({ children, customClass }) => {
 //   return (
 //     <p
-//       class={`${customClass} max-w-3xl text-base text-black md:text-xl mx-auto text-center undefined`}
+//       class={`${customClass} max-w-3xl text-base text-black md:text-xl mx-auto text-center`}
 //     >
 //       {children}
 //     </p>
