@@ -22,6 +22,10 @@ const Slider = ({ data, title }: { data: any; title?: string }) => {
       setIsEnd(swiperRef.current.isEnd);
     }
   };
+
+  const handlePrev = () => swiperRef.current?.slidePrev();
+  const handleNext = () => swiperRef.current?.slideNext();
+
   return (
     <section className="animate-fade-in">
       <div className="container">
@@ -30,14 +34,14 @@ const Slider = ({ data, title }: { data: any; title?: string }) => {
           {!isHidden && (
             <div className={`flex items-center gap-1`}>
               <button
-                onClick={() => swiperRef.current?.slidePrev()}
+                onClick={handlePrev}
                 disabled={isBeginning}
                 className="cursor-pointer rounded-md bg-gray-200 p-1 disabled:cursor-not-allowed disabled:opacity-50 sm:p-2"
               >
                 <ChevronLeftIcon className="size-4 stroke-2 sm:size-5" />
               </button>
               <button
-                onClick={() => swiperRef.current?.slideNext()}
+                onClick={handleNext}
                 disabled={isEnd}
                 className="cursor-pointer rounded-md bg-gray-200 p-1 disabled:cursor-not-allowed disabled:opacity-50 sm:p-2"
               >
