@@ -7,10 +7,6 @@ import {
   Transition,
 } from "@headlessui/react";
 import { Fragment } from "react";
-import { SvgChevronDown, SvgTickMark } from "../generic/icons";
-import { useGlobal } from "@/hooks/use-global";
-import { useTranslation } from "@/translation/client";
-import { translateErrorMessage } from "@/services/utils";
 
 const ProfileDropdown = ({
   placeholder,
@@ -29,9 +25,6 @@ const ProfileDropdown = ({
   errorMessage?: any;
   small?: any;
 }) => {
-  const { getFormattedDateTime } = useGlobal();
-  const { t } = useTranslation();
-
   return (
     <div>
       <Listbox as={"div"} value={value} onChange={onChange}>

@@ -10,6 +10,15 @@ const Slider = ({ data, title }: { data: any; title?: string }) => {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
+  // console.log(isLoading);
+  // const handleBeforeInit = () => {
+  //   setIsLoading(true);
+  // };
+
+  // const handleAfterInit = () => {
+  //   setIsLoading(false);
+  // };
 
   const handleSwiper = (swiper: SwiperType) => {
     swiperRef.current = swiper;
@@ -52,9 +61,12 @@ const Slider = ({ data, title }: { data: any; title?: string }) => {
         </div>
 
         <div className="!-mx-4">
+          {/* {isLoading && <div className="">loading...</div>} */}
           <Swiper
             onSwiper={handleSwiper}
             onSlideChange={handleSlideChange}
+            // onBeforeInit={handleBeforeInit}
+            // onInit={handleAfterInit}
             spaceBetween={16}
             breakpoints={{
               0: {
